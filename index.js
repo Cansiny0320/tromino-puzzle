@@ -1,6 +1,7 @@
-function Tromino(container, options) {
+function Tromino(canvas, options) {
   this.message = new Array(options.size).fill(0).map(() => new Array(options.size).fill(0))
-  this.container = container
+  this.canvas = canvas
+  this.ctx = canvas.getContext("2d")
   this.size = options.size
   this.loseX = options.lose.x
   this.loseY = options.lose.y
@@ -9,33 +10,14 @@ function Tromino(container, options) {
   this.init()
 }
 
-//按照输入的行和列创造格子
-Tromino.prototype.createTable = function () {
-  const height = this.container.clientHeight / this.size
-  const width = this.container.clientWidth / this.size
-  this.message.forEach((item, j) => {
-    item.forEach((_, i) => {
-      if (i === this.loseX && j === this.loseY) {
-        this.doms.push(`<div style="height:${height}px;width:${width}px;" class="lose"></div>`)
-      } else {
-        this.doms.push(`<div style="height:${height}px;width:${width}px;"></div>`)
-      }
-    })
-  })
-  this.container.innerHTML = this.doms.join("")
-  this.doms = this.container.querySelectorAll("div")
-}
-
 Tromino.prototype.init = function () {
   this.message[this.loseX][this.loseY] = -1
-  this.createTable()
   this.run_L(this.size / 2, this.size / 2, this.loseX, this.loseY, this.size)
   this.getColor()
-  // this.putNumber()
 }
 
 Tromino.prototype.getColor = function () {
-  var colors = [
+  const colors = [
     "#fff5ab",
     "#1eae98",
     "#867ae9",
@@ -53,25 +35,22 @@ Tromino.prototype.getColor = function () {
     "#bee5d3",
     "#74c7b8",
   ]
+  const height = this.canvas.height / this.size
+  const width = this.canvas.width / this.size
   const len = colors.length
-  this.message.forEach((item, j) => {
-    item.forEach((_, i) => {
+  console.log(this.message)
+  this.message.forEach((item, i) => {
+    item.forEach((_, j) => {
       if (this.message[i][j] != 0 && this.message[i][j] != -1) {
         const num = this.message[i][j] % len
-        this.doms[i * this.size + j].style.backgroundColor = colors[num]
+        this.ctx.fillStyle = colors[num]
+        this.ctx.fillRect(j * width, i * height, width, height)
       } else {
-        this.doms[i * this.size + j].style.backgroundColor = "#000"
+        this.ctx.fillStyle = "black"
+        this.ctx.fillRect(j * height, i * width, width, height)
       }
     })
   })
-}
-
-Tromino.prototype.putNumber = function () {
-  for (var i = 0; i < this.tr; i++) {
-    for (var j = 0; j < this.td; j++) {
-      this.doms[i][j].innerHTML = this.message[i][j]
-    }
-  }
 }
 
 Tromino.prototype.run_L = function (centerX, centerY, loseX, loseY, len) {
@@ -147,7 +126,7 @@ Tromino.prototype.run_L = function (centerX, centerY, loseX, loseY, len) {
 }
 
 //获取输入的需求信息
-const box = document.querySelector(".tromino_box")
+const canvas = document.querySelector("canvas")
 
 document.querySelector(".show_tromino").onclick = function () {
   const size = Math.pow(2, parseInt(document.querySelector(".tromino_size").value))
@@ -164,5 +143,5 @@ document.querySelector(".show_tromino").onclick = function () {
       y: line,
     },
   }
-  new Tromino(box, options)
+  new Tromino(canvas, options)
 }
