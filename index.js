@@ -12,7 +12,7 @@ function Tromino(canvas, options) {
 
 Tromino.prototype.init = function () {
   this.message[this.loseX][this.loseY] = -1
-  this.run_L(this.size / 2, this.size / 2, this.loseX, this.loseY, this.size)
+  this.run(this.size / 2, this.size / 2, this.loseX, this.loseY, this.size)
   this.getColor()
 }
 
@@ -53,7 +53,7 @@ Tromino.prototype.getColor = function () {
   })
 }
 
-Tromino.prototype.run_L = function (centerX, centerY, loseX, loseY, len) {
+Tromino.prototype.run = function (centerX, centerY, loseX, loseY, len) {
   if (len < 2) {
     return
   }
@@ -69,10 +69,10 @@ Tromino.prototype.run_L = function (centerX, centerY, loseX, loseY, len) {
     // console.log(centerX, centerY)
     // console.log(centerX, centerY - 1)
     // console.log("--------------")
-    this.run_L(centerX + count, centerY - count, centerX, centerY - 1, len / 2) //右上角
-    this.run_L(centerX + count, centerY + count, centerX, centerY, len / 2) //左上角
-    this.run_L(centerX - count, centerY + count, centerX - 1, centerY, len / 2) //左下角
-    this.run_L(centerX - count, centerY - count, loseX, loseY, len / 2) //缺失的
+    this.run(centerX + count, centerY - count, centerX, centerY - 1, len / 2) //右上角
+    this.run(centerX + count, centerY + count, centerX, centerY, len / 2) //左上角
+    this.run(centerX - count, centerY + count, centerX - 1, centerY, len / 2) //右上角
+    this.run(centerX - count, centerY - count, loseX, loseY, len / 2) //缺失的
   }
   //缺失的方块在左下方
   else if (loseX >= centerX && loseY < centerY) {
@@ -85,10 +85,10 @@ Tromino.prototype.run_L = function (centerX, centerY, loseX, loseY, len) {
     // console.log(centerX, centerY)
     // console.log(centerX - 1, centerY - 1)
     // console.log("------------")
-    this.run_L(centerX - count, centerY - count, centerX - 1, centerY - 1, len / 2) //右下角
-    this.run_L(centerX + count, centerY + count, centerX, centerY, len / 2) //左上角
-    this.run_L(centerX - count, centerY + count, centerX - 1, centerY, len / 2) //左下角
-    this.run_L(centerX + count, centerY - count, loseX, loseY, len / 2) //缺失的
+    this.run(centerX - count, centerY - count, centerX - 1, centerY - 1, len / 2) //右下角
+    this.run(centerX + count, centerY + count, centerX, centerY, len / 2) //左上角
+    this.run(centerX - count, centerY + count, centerX - 1, centerY, len / 2) //左下角
+    this.run(centerX + count, centerY - count, loseX, loseY, len / 2) //缺失的
   }
   //缺失的方块在右上方
   else if (loseX < centerX && loseY >= centerY) {
@@ -101,10 +101,10 @@ Tromino.prototype.run_L = function (centerX, centerY, loseX, loseY, len) {
     // console.log(centerX, centerY)
     // console.log(centerX - 1, centerY - 1)
     // console.log("------------")
-    this.run_L(centerX + count, centerY - count, centerX, centerY - 1, len / 2) //右上角
-    this.run_L(centerX + count, centerY + count, centerX, centerY, len / 2) //左上角
-    this.run_L(centerX - count, centerY - count, centerX - 1, centerY - 1, len / 2) //右下角
-    this.run_L(centerX - count, centerY + count, loseX, loseY, len / 2) //缺失的
+    this.run(centerX + count, centerY - count, centerX, centerY - 1, len / 2) //右上角
+    this.run(centerX + count, centerY + count, centerX, centerY, len / 2) //左上角
+    this.run(centerX - count, centerY - count, centerX - 1, centerY - 1, len / 2) //右下角
+    this.run(centerX - count, centerY + count, loseX, loseY, len / 2) //缺失的
   }
   //缺失的方块在右下方
   else {
@@ -117,10 +117,10 @@ Tromino.prototype.run_L = function (centerX, centerY, loseX, loseY, len) {
     // console.log(centerX - 1, centerY - 1)
     // console.log(centerX, centerY - 1)
     // console.log("------------")
-    this.run_L(centerX - count, centerY - count, centerX - 1, centerY - 1, len / 2) //右下角
-    this.run_L(centerX - count, centerY + count, centerX - 1, centerY, len / 2) //左下角
-    this.run_L(centerX + count, centerY - count, centerX, centerY - 1, len / 2) //右上角
-    this.run_L(centerX + count, centerY + count, loseX, loseY, len / 2) //缺失的
+    this.run(centerX - count, centerY - count, centerX - 1, centerY - 1, len / 2) //右下角
+    this.run(centerX - count, centerY + count, centerX - 1, centerY, len / 2) //左下角
+    this.run(centerX + count, centerY - count, centerX, centerY - 1, len / 2) //右上角
+    this.run(centerX + count, centerY + count, loseX, loseY, len / 2) //缺失的
   }
   this.number++
 }
